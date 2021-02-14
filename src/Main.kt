@@ -10,8 +10,6 @@ import kotlin.random.Random
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
-
-
     var g = Game()
     var i = AtomicInteger(4)
 
@@ -26,7 +24,7 @@ fun main(args: Array<String>) {
     t.start()
 
     while(true) {
-        Thread.sleep(600)
+        sleep(600)
         g.render(i.get())
         g.moveFences()
     }

@@ -42,6 +42,7 @@ class Game() {
     fun moveFences() {
         for(f in fences) {
             if(f.position > 13) {
+                f.newHole()
                 f.position = 0
             } else {
                 f.position++
