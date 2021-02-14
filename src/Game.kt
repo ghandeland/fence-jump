@@ -10,7 +10,7 @@ class Game() {
 
     val ball = Ball()
 
-    fun render(ballPosition: Int = -1) {
+    fun render(ballPosition: Int) {
         println("\n".repeat(15))
 
         var str = ""

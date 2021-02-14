@@ -28,7 +28,6 @@ fun main(args: Array<String>) {
         g.render(i.get())
         g.moveFences()
     }
-
 }
 
 
