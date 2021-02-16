@@ -1,9 +1,10 @@
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
-class Game() {
+class Game {
 
-    private val fences = listOf<Fence>(
+    private val fences = listOf(
         Fence(0),
         Fence(3),
         Fence(6),
@@ -12,33 +13,33 @@ class Game() {
         )
 
     private val ball = Ball()
-
+    private var running = AtomicBoolean(false)
     private var input = AtomicInteger(4)
 
     private val inputThread = Thread {
         val scanner = Scanner(System.`in`)
-        while(true) {
+        while(running.get()) {
             input.set(scanner.nextInt())
             Thread.sleep(100)
         }
     }
 
     fun start() {
+        inputThread.isDaemon
         inputThread.start()
         while(true) {
             Thread.sleep(600)
-            render(input.get())
+            render()
             moveFences()
         }
     }
 
-    private fun render(ballPosition: Int) {
+    private fun render() {
         println("\n".repeat(15))
-
         var str = ""
         for(i in 14 downTo 0) {
             if(i == 13) {
-                ball.setPos(ballPosition)
+                ball.setPos(input.get())
                 var fenceRow = false
                 fences.forEach {
                     if(it.position == i) {
