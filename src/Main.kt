@@ -10,24 +10,13 @@ import kotlin.random.Random
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
-    var g = Game()
-    var i = AtomicInteger(4)
 
-    val t = Thread {
-        val scanner = Scanner(System.`in`)
-        while(true) {
-            i.set(scanner.nextInt())
-            sleep(100)
-        }
-    }
-    t.isDaemon = true
-    t.start()
+    printTitle()
+    Game().start()
+}
 
-    while(true) {
-        sleep(600)
-        g.render(i.get())
-        g.moveFences()
-    }
+fun printTitle() {
+    println("\n\nFENCE JUMP")
 }
 
 

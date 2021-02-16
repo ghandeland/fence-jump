@@ -1,6 +1,9 @@
+import java.util.*
+import java.util.concurrent.atomic.AtomicInteger
+
 class Game() {
 
-    val fences = listOf<Fence>(
+    private val fences = listOf<Fence>(
         Fence(0),
         Fence(3),
         Fence(6),
@@ -8,9 +11,28 @@ class Game() {
         Fence(12)
         )
 
-    val ball = Ball()
+    private val ball = Ball()
 
-    fun render(ballPosition: Int) {
+    private var input = AtomicInteger(4)
+
+    private val inputThread = Thread {
+        val scanner = Scanner(System.`in`)
+        while(true) {
+            input.set(scanner.nextInt())
+            Thread.sleep(100)
+        }
+    }
+
+    fun start() {
+        inputThread.start()
+        while(true) {
+            Thread.sleep(600)
+            render(input.get())
+            moveFences()
+        }
+    }
+
+    private fun render(ballPosition: Int) {
         println("\n".repeat(15))
 
         var str = ""
@@ -39,7 +61,7 @@ class Game() {
         println(str)
     }
 
-    fun moveFences() {
+    private fun moveFences() {
         for(f in fences) {
             if(f.position > 13) {
                 f.newHole()
