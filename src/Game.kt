@@ -25,38 +25,40 @@ class Game {
     }
 
     fun start() {
+        running.set(true)
         inputThread.isDaemon
         inputThread.start()
-        while(true) {
-            Thread.sleep(600)
+        while(running.get()) {
+            ball.setPos(input.get())
             render()
             moveFences()
+            Thread.sleep(600)
         }
     }
 
     private fun render() {
         println("\n".repeat(15))
         var str = ""
-        for(i in 14 downTo 0) {
+        renderLoop@ for(i in 14 downTo 0) {
             if(i == 13) {
-                ball.setPos(input.get())
-                var fenceRow = false
-                fences.forEach {
-                    if(it.position == i) {
-                        val ballInHole = if(it.hole == ball.position) "O" else " "
-                        str += it.getString(ballInHole)
-                        fenceRow = true
+                for(f in fences) {
+                    if(f.hPos == i) {
+                        if(f.hole == ball.vPos) {
+                            str += f.getRow(true) + "\n"
+                            continue@renderLoop
+                        } else {
+                            str += f.getRow().replaceRange(ball.vPos..ball.vPos, "X") + "\n"
+                            running.set(false)
+                            continue@renderLoop
+                        }
                     }
                 }
-                if(!fenceRow) str += ball.getString()
+                str += ball.getRow()
             } else {
-                fences.forEach {
-                    if(it.position == i) {
-                        str += it.getString()
-                    }
+                for(f in fences) {
+                    if(f.hPos == i) str += f.getRow()
                 }
             }
-
             str += "\n"
         }
         println(str)
@@ -64,11 +66,11 @@ class Game {
 
     private fun moveFences() {
         for(f in fences) {
-            if(f.position > 13) {
+            if(f.hPos > 13) {
                 f.newHole()
-                f.position = 0
+                f.hPos = 0
             } else {
-                f.position++
+                f.hPos++
             }
         }
     }
