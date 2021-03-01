@@ -14,7 +14,7 @@ class Game {
 
     private val ball = Ball()
     private var running = AtomicBoolean(false)
-    private var input = AtomicInteger(4)
+    private var input = AtomicInteger(5)
 
     private val inputThread = Thread {
         val scanner = Scanner(System.`in`)
@@ -25,6 +25,7 @@ class Game {
     }
 
     fun start() {
+        fences[4].hole = 4
         running.set(true)
         inputThread.isDaemon
         inputThread.start()
