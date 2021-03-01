@@ -41,13 +41,13 @@ class Game {
         var str = ""
         renderLoop@ for(i in 14 downTo 0) {
             if(i == 13) {
-                for(f in fences) {
-                    if(f.hPos == i) {
-                        if(f.hole == ball.vPos) {
-                            str += f.getRow(true) + "\n"
+                for(fence in fences) {
+                    if(fence.verticalPos == i) {
+                        if(fence.hole == ball.horizontalPos) {
+                            str += fence.getRow(true) + "\n"
                             continue@renderLoop
                         } else {
-                            str += f.getRow().replaceRange(ball.vPos..ball.vPos, "X") + "\n"
+                            str += fence.getRow().replaceRange(ball.horizontalPos..ball.horizontalPos, "X") + "\n"
                             running.set(false)
                             continue@renderLoop
                         }
@@ -56,7 +56,7 @@ class Game {
                 str += ball.getRow()
             } else {
                 for(f in fences) {
-                    if(f.hPos == i) str += f.getRow()
+                    if(f.verticalPos == i) str += f.getRow()
                 }
             }
             str += "\n"
@@ -66,11 +66,11 @@ class Game {
 
     private fun moveFences() {
         for(f in fences) {
-            if(f.hPos > 13) {
+            if(f.verticalPos > 13) {
                 f.newHole()
-                f.hPos = 0
+                f.verticalPos = 0
             } else {
-                f.hPos++
+                f.verticalPos++
             }
         }
     }

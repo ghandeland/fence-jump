@@ -11,12 +11,9 @@ import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
 
-    printTitle()
-    Game().start()
-}
-
-fun printTitle() {
     println("\n\nFENCE JUMP")
+
+    Game().start()
 }
 
 
