@@ -16,7 +16,7 @@ class Game {
     private val ball = Ball()
     private var running = AtomicBoolean(false)
     private var input = AtomicInteger(5)
-    private var score = 0;
+    private var score = 0
 
     private val inputThread = Thread {
         val scanner = Scanner(System.`in`)
