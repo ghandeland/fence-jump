@@ -12,9 +12,11 @@ class Game {
         Fence(12)
         )
 
+    private val sb = StringBuilder()
     private val ball = Ball()
     private var running = AtomicBoolean(false)
     private var input = AtomicInteger(5)
+    private var score = 0;
 
     private val inputThread = Thread {
         val scanner = Scanner(System.`in`)
@@ -27,7 +29,7 @@ class Game {
     fun start() {
         fences[4].hole = 4
         running.set(true)
-        inputThread.isDaemon
+        inputThread.isDaemon = true
         inputThread.start()
         while(running.get()) {
             ball.setPos(input.get())
@@ -38,31 +40,39 @@ class Game {
     }
 
     private fun render() {
-        println("\n".repeat(15))
-        var str = ""
+        sb.clear()
+        sb.append("\n".repeat(10))
+            .append("       Score: $score\n\n")
+
         renderLoop@ for(i in 14 downTo 0) {
             if(i == 13) {
                 for(fence in fences) {
                     if(fence.verticalPos == i) {
                         if(fence.hole == ball.horizontalPos) {
-                            str += fence.getRow(true) + "\n"
+                            score++
+                            sb.appendS(fence.getRow(true))
                             continue@renderLoop
                         } else {
-                            str += fence.getRow().replaceRange(ball.horizontalPos..ball.horizontalPos, "X") + "\n"
+                            sb.appendS(fence.getRow().replaceRange(ball.horizontalPos..ball.horizontalPos, "X"))
                             running.set(false)
                             continue@renderLoop
                         }
                     }
                 }
-                str += ball.getRow()
+                sb.appendS(ball.getRow())
+                continue@renderLoop
             } else {
-                for(f in fences) {
-                    if(f.verticalPos == i) str += f.getRow()
+                for(fence in fences) {
+                    if(fence.verticalPos == i) {
+                        sb.appendS(fence.getRow())
+                        continue@renderLoop
+
+                    }
                 }
             }
-            str += "\n"
+            sb.appendS(" ".repeat(10))
         }
-        println(str)
+        println(sb.toString())
     }
 
     private fun moveFences() {
@@ -75,4 +85,11 @@ class Game {
             }
         }
     }
+
+    private fun java.lang.StringBuilder.appendS(str: String) {
+        this.append("     |")
+            .append(str)
+            .append("|\n")
+    }
 }
+
