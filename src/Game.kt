@@ -2,7 +2,7 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 
-class Game {
+class Game(private var renderVal: Long = 600) {
 
     private val fences = listOf(
         Fence(0),
@@ -10,7 +10,7 @@ class Game {
         Fence(6),
         Fence(9),
         Fence(12)
-        )
+    )
 
     private val sb = StringBuilder()
     private val ball = Ball()
@@ -35,7 +35,7 @@ class Game {
             ball.setPos(input.get())
             render()
             moveFences()
-            Thread.sleep(600)
+            Thread.sleep(renderVal)
         }
     }
 
