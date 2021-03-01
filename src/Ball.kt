@@ -1,11 +1,12 @@
-class Ball(var position: Int = 4) {
+class Ball(var horizontalPos: Int = 5) {
 
-    fun getString(): String {
-        return " ".repeat(10).replaceRange(position..position, "O")
+    fun getRow(): String {
+        return " ".repeat(10).replaceRange(horizontalPos..horizontalPos, "O")
     }
 
-
     fun setPos(pos: Int) {
-        if(pos > -1 && pos < 10) this.position = pos
+        if(pos > -1 && pos < 10) {
+            horizontalPos = if(pos == 0) 9 else pos - 1
+        }
     }
 }
